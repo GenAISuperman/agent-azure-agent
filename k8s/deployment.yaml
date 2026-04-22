@@ -1,32 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "{{AGENT_ID}}"
-  namespace: "agents-{{TEAM_NAME}}"
+  name: "azure-agent"
+  namespace: "agents-cloud"
   labels:
-    app: "{{AGENT_ID}}"
-    team: "{{TEAM_NAME}}"
+    app: "azure-agent"
+    team: "cloud"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: "{{AGENT_ID}}"
+      app: "azure-agent"
   template:
     metadata:
       labels:
-        app: "{{AGENT_ID}}"
-        team: "{{TEAM_NAME}}"
+        app: "azure-agent"
+        team: "cloud"
         azure.workload.identity/use: "true"
     spec:
-      serviceAccountName: "sa-{{AGENT_ID}}"
+      serviceAccountName: "sa-azure-agent"
       containers:
-        - name: "{{AGENT_ID}}"
-          image: "{{ACR_LOGIN_SERVER}}/agents/{{AGENT_ID}}:latest"
+        - name: "azure-agent"
+          image: "acrshoppoc.azurecr.io/agents/azure-agent:latest"
           ports:
             - containerPort: 8000
           envFrom:
             - configMapRef:
-                name: "config-{{AGENT_ID}}"
+                name: "config-azure-agent"
           resources:
             requests:
               cpu: 250m
